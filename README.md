@@ -2,7 +2,7 @@
 Public Data Projects - Data Analytics, Casual Inference and Machine Learning
 
 ## Conctact Info
-- Linkedin Profile:
+- [Linkedin Profile](https://www.linkedin.com/in/magj87)
 - Email: mariogj1987@gmail.com
 
 ## Projects
