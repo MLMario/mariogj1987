@@ -18,7 +18,7 @@ Public Data Projects - Data Analytics, Casual Inference and Machine Learning
 > The notebook offers a hands-on demonstration of Interrupted Time Series Analysis (ITSA) for assessing causal effects in time series data. Using two scenarios—a basic time series and one with autocorrelation—it effectively evaluates the impact of a strategic price change on shipment demand. Autocorrelation presence and its implications are also thoroughly examined.
 
 ### Machine Learning
-1) [Using Chat GPT to forecast Rwanda CO2 emissions:](https://github.com/MLMario/mariogj1987/blob/main/Predicting_Carbon_Emission_in_Rwanda_using_Chat_GPT.ipynb)
+1) [Using Chat GPT to forecast Rwanda CO2 emissions](https://github.com/MLMario/mariogj1987/blob/main/Predicting_Carbon_Emission_in_Rwanda_using_Chat_GPT.ipynb)
 > In this notebook I explore using chatpgt v4 with **light** prompting to try to guide me through making this predictions and ask it to write the code, for an article with more details and results, please look at this linkedin article
 
 
