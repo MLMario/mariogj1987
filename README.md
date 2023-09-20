@@ -14,7 +14,7 @@ Public Data Projects - Data Analytics, Casual Inference and Machine Learning
 
 ### Casual Inference
 
-1) [Causal Inference in Time Series: A Simple Demonstration Using Interrupted Time Series Analysis] (https://github.com/MLMario/mariogj1987/blob/main/ITSA_for_casual_time_series_analysis.ipynb)
+1) [Causal Inference in Time Series: A Simple Demonstration Using Interrupted Time Series Analysis](https://github.com/MLMario/mariogj1987/blob/main/ITSA_for_casual_time_series_analysis.ipynb)
 > The notebook offers a hands-on demonstration of Interrupted Time Series Analysis (ITSA) for assessing causal effects in time series data. Using two scenarios—a basic time series and one with autocorrelation—it effectively evaluates the impact of a strategic price change on shipment demand. Autocorrelation presence and its implications are also thoroughly examined.
 
 ### Machine Learning
