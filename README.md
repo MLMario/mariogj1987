@@ -19,7 +19,11 @@ Public Data Projects - Data Analytics, Casual Inference and Machine Learning
 
 ### Machine Learning
 1) [Using Chat GPT to forecast Rwanda CO2 emissions](https://github.com/MLMario/mariogj1987/blob/main/Predicting_Carbon_Emission_in_Rwanda_using_Chat_GPT.ipynb)
-> In this notebook I explore using chatpgt v4 with **light** prompting to try to guide me through making this predictions and ask it to write the code, for an article with more details and results, please look at this linkedin article
+> In this notebook I explore using chatpgt v4 with **light** prompting to try to guide me through making this predictions and ask it to write the code, for an article with more details and results, please look at this [Linkedin article](https://www.linkedin.com/pulse/can-chatgpt-participate-ml-competition-mario-garc%2525C3%2525ADa-jord%2525C3%2525A1n%3FtrackingId=KF91nD16MfD0Z16%252BsJ38RA%253D%253D/?trackingId=KF91nD16MfD0Z16%2BsJ38RA%3D%3D)
+
+2) [Fine tuning Llama 2 with linkedin job posts to enhace my job search (In Progress)]
+> In this notebook I attemp to train a pre-train version of Llama 2 - 7b model with web scrapped data from linkeding post. The objective is to train the Ai to recognize what skills and experience requirements are related with what jobs and then prompt it: "Given this set of skils (my skills) what jobs do you think are a good fit for me" This is a first attemp at making my job search smarter while learning more about LLM's. 
+
 
 
 
