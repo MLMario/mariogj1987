@@ -24,6 +24,10 @@ Public Data Projects - Data Analytics, Casual Inference and Machine Learning
 2) [Fine tuning Llama 2 with linkedin job posts to enhace my job search (In Progress)]
 > In this notebook I attemp to train a pre-train version of Llama 2 - 7b model with web scrapped data from linkeding post. The objective is to train the Ai to recognize what skills and experience requirements are related with what jobs and then prompt it: "Given this set of skils (my skills) what jobs do you think are a good fit for me" This is a first attemp at making my job search smarter while learning more about LLM's. 
 
+2.1 [Linkeding Scraper Python Class](https://github.com/MLMario/mariogj1987/blob/main/LinScraper.py)
+> This is the code I use to download a dataset of jobs, including the title, link, and, more importantly, the job description for each job. Please use it as a reference point. LinkedIn doesn't generally allow people to scrape their site, so the XML seems to change relatively frequently and is not user-friendly.
 
+2.2 Job Description Data processing for Fine Tuning Purpose
+> In this notebook I show how I processed the data to suit our training (fine tuning) objective
 
 
