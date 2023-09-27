@@ -17,6 +17,8 @@ Public Data Projects - Data Analytics, Casual Inference and Machine Learning
 1) [Causal Inference in Time Series: A Simple Demonstration Using Interrupted Time Series Analysis](https://github.com/MLMario/mariogj1987/blob/main/ITSA_for_casual_time_series_analysis.ipynb)
 > The notebook offers a hands-on demonstration of Interrupted Time Series Analysis (ITSA) for assessing causal effects in time series data. Using two scenarios—a basic time series and one with autocorrelation—it effectively evaluates the impact of a strategic price change on shipment demand. Autocorrelation presence and its implications are also thoroughly examined.
 
+2) A clear primer on synthethic controls - Part 1 (Wip)
+
 ### Machine Learning
 1) [Using Chat GPT to forecast Rwanda CO2 emissions](https://github.com/MLMario/mariogj1987/blob/main/Predicting_Carbon_Emission_in_Rwanda_using_Chat_GPT.ipynb)
 > In this notebook I explore using chatpgt v4 with **light** prompting to try to guide me through making this predictions and ask it to write the code, for an article with more details and results, please look at this [Linkedin article](https://www.linkedin.com/pulse/can-chatgpt-participate-ml-competition-mario-garc%2525C3%2525ADa-jord%2525C3%2525A1n%3FtrackingId=KF91nD16MfD0Z16%252BsJ38RA%253D%253D/?trackingId=KF91nD16MfD0Z16%2BsJ38RA%3D%3D)
