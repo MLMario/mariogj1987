@@ -6,6 +6,7 @@ Public Data Projects - Data Analytics, Casual Inference and Machine Learning
 - Email: mariogj1987@gmail.com
 
 ## Projects
+
 ### Experimentation
 1) [Simulating Bias through interaction effects in a ridesharing marketplace](https://github.com/MLMario/mariogj1987/blob/main/Simulation_Interaction_Effects_in_a_Ridesharing_Company.ipynb)
 > This notebook simulates and analyzes data from an A/A and A/B test for a ride-sharing company, highlighting the challenges of measuring the true impact of a price drop amidst interaction effects. Various validation methods are explored to account for these complexities and offer potential insights.
@@ -31,5 +32,10 @@ Public Data Projects - Data Analytics, Casual Inference and Machine Learning
 
 2.2 Job Description Data processing for Fine Tuning Purpose
 > In this notebook I show how I processed the data to suit our training (fine tuning) objective
+
+## Linkedin Articles
+
+1. [Synthetic controls as an alternative for A/B testing](https://www.linkedin.com/pulse/synthetic-controls-alternative-ab-testing-mario-garc%2525C3%2525ADa-jord%2525C3%2525A1n%3FtrackingId=%252BiSVI9d%252BRdeLlnUvSFziNQ%253D%253D/?trackingId=%2BiSVI9d%2BRdeLlnUvSFziNQ%3D%3D)
+2. [Can Chat GPT Participate in an ML Competition?](https://www.linkedin.com/feed/update/urn:li:activity:7106841634264264704/)
 
 
