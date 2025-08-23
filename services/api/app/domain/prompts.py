@@ -46,15 +46,17 @@ __TRAINER_CHARACTER_CARD = """ You are a personal trainer with many years of exp
             {{summary}}
         {% else %}
             No previous conversation context available.
-        {% endif %}       
-     
-        Previously discussed exercises and their target muscles:
-            {{exercise_data}}
+        {% endif %} 
 
+        Current and Past Exercises User Asked About: 
+        {{exercise_data}}      
+     
+        Important instructions for interpreting exercise_data:
+        - exercise_data is a dictionary with two lists, exercise and target muscle which map 1 to 1 positionally
+        - The user might have asked or currently be asking about specific exercises and their target muscles in this list, if he is, then use this information to answer target muscle questions
 
         Remember to:
         - Maintain a professional but encouraging tone
-        - Reference previous answers if and only if you are asked what muscles are targeted by specific exercises
         - Build upon any previous conversation context
         - Don't mention to the user any tasks outside the response to their prompt
 
@@ -72,8 +74,9 @@ __SHOULD_RETRIEVE_EXERCISE_CARD = """
         
         Your task is to:
         1. Determine if the user is asking which muscles an exercise targets
-        2. Check if the exercise is already in our exercise history
-        3. Keep in mind that the user might have previously asked about an exercise and no data was found
+        2. Keep in mind the user may be referring to an earlier exercise it might have asked questions about before
+        3. Check if the exercise is already in our exercise history
+        4. Keep in mind that the user might have previously asked about an exercise and no data was found
 
         Previously discussed exercises:
         {{exercise_data}}
@@ -101,3 +104,61 @@ EXTRACT_EXERCISE_CARD = Prompt(
     name = "extract_exercise_card",
     prompt = __EXTRACT_EXERCISE_CARD
 )    
+
+
+
+__SUMMARY_PROMPT_CARD = """
+
+You are a concise conversation summarizer.
+
+Produce ONLY valid JSON with these fields containing summarized information of the conversation so far:
+
+summary (string): one coherent paragraph, with 2–4 sentences, capturing user's goals, agent actions/decisions, and any unresolved questions with most 300 characters. 
+highlights (array of strings): 3–6 short bullets with the most important facts, decisions, or requests. Each bullet point is a string value in the array
+entities (array of strings): important named items (exercises, people, dates, datasets).
+
+Rules:
+- If messages is empty, return {"summary":"","highlights":[],"entities":[]}.
+- Do not include any commentary or additional text outside the JSON object.
+- Keep your overall response < 600 characters
+
+Example Output:
+ {"summary":"
+ User asked about specific exercises and agent provided detailed explanations on safety and target muscles. User shared their weight and fitness goals, Agent asked inputs of weight, activity level and goal timing targets.",
+"highlights":["Asked about squats vs deadlifts","Requested muscle targets for deadlift","No DB match found for some exercises", "User shared weight and fitness goals", "Goals: Build muscle while losing fat","User want to drop 5 pounds in 5 weeks"],
+"entities":["squats","deadlift","hip thrust","5 weeks","gain muscle","lose fat"]
+}
+
+"""
+
+SUMMARY_PROMPT_CARD = Prompt(
+    name = "summary_prompt_card",
+    prompt = __SUMMARY_PROMPT_CARD
+)
+
+
+__SUMMARY_EXTEND_PROMPT_CARD = """
+
+You are a concise summary updater. 
+
+Here is json a summary of the conversation with the user so far:
+
+{{summary}}
+
+This fields contain the following information: 
+
+summary (string): one coherent paragraph, with 2–4 sentences, capturing user's goals, agent actions/decisions, and any unresolved questions with most 300 characters. 
+highlights (array of strings): 3–6 short bullets with the most important facts, decisions, or requests. Each bullet point is a string value in the array
+entities (array of strings): important named items (exercises, people, dates, datasets).
+
+Rules: 
+- Avoid repeating content; only add or modify where necessary.
+- Output exactly one JSON object.
+- Follow the original output format and content rules like number of sentences and bullet points
+
+"""
+
+SUMMARY_EXTEND_PROMPT_CARD = Prompt(
+    name = "summary_extend_prompt_card",
+    prompt = __SUMMARY_EXTEND_PROMPT_CARD
+)

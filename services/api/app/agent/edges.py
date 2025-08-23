@@ -6,6 +6,7 @@ from menotrainer.config import Configuration
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from .tools import get_chat_model
 from .helpers import last_user_text , get_exercise_data
+from menotrainer.config import Configuration
 
 from menotrainer.services.api.app.domain.prompts import (
     SHOULD_RETRIEVE_EXERCISE_CARD
@@ -45,7 +46,7 @@ def should_summarize_conversation(
 
     messages = state.get("messages", [])
 
-    if len(messages) >= summarization_threshold:
+    if len(messages) >= Configuration.TOTAL_MESSAGES_SUMMARY_TRIGGER:
         return True
     else:
         return False

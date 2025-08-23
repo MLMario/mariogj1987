@@ -1,6 +1,6 @@
 
 from langchain_core.runnables import RunnableConfig
-from .chains import get_trainer_chain
+from .chains import get_trainer_chain, get_summary_chain
 from menotrainer.services.api.app.domain.prompts import(
     EXTRACT_EXERCISE_CARD
 )
@@ -9,6 +9,8 @@ from .state import PhilosoferState
 from .tools import retrieve_exercise_from_user_prompt, fetch_target_muscles
 import json
 from .helpers import get_exercise_data
+from menotrainer.config import Configuration
+from langchain_core.messages import RemoveMessage
 
 
 """
@@ -40,12 +42,12 @@ async def conversation_node(state: PhilosoferState, config: RunnableConfig):
         }
     )
 
-    return {"messages": [response]}
+    return {"messages": response}
     """
     Conversation Chain includes Bot Personality + messages state
     """
 
-async def retrieve_exercise_content(state: PhilosoferState, config: RunnableConfig):
+async def retrieve_exercise_content(state: PhilosoferState):
 
     messages = state.get("messages", [])
     summary = state.get("summary", "")
@@ -76,8 +78,28 @@ async def retrieve_exercise_content(state: PhilosoferState, config: RunnableConf
 
 
 async def connector_node(state: PhilosoferState):
+    
+    search_exercises = ""
 
-    return {"search_exercises": ''} # t
+    return {"search_exercises": search_exercises}
 
+async def summarize_conversation_node(state: PhilosoferState):
+    
+    summary = state.get("summary", "")
+    messages = state.get("messages", [])
 
+    summary_chain  = get_summary_chain(summary)
 
+    response = await summary_chain.ainvoke(
+        {
+            "summary": summary,
+            "messages": messages    
+        }
+    )
+
+    deleted_messages = [
+        RemoveMessage(id=m.id)
+        for m in state["messages"][:-Configuration.TOTAL_MESSAGES_SUMMARY_TRIGGER]
+    ]
+
+    return {"summary": response.content , "messages": deleted_messages}
