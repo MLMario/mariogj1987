@@ -90,7 +90,7 @@ retriever = function fo retrieve data
 writer = function to write episodic memory
 
 knowledge_tool = create_retriever_tool(
-    retriever,
+    retriever,n
     "extract_knowledge_node",
     "Always use this tool when the user asks you about menopause symptoms, treatments and general information. 
     also when user ask you about recommendations to treat thier symtoms",
@@ -127,6 +127,15 @@ helps push the conversation forward after knowledge has been extracted
 
 ** save_to_episodic_memory_node ** 
 
-- its time to change
+- leverages summarize context output to save relevant information to episodic memory
+- updates episodic memory with new user data and extracted knowledge
+
+** reset_knowledge_node **
+
+- reset knowledge status POST response to user 
+
+** summarize_conversation_node **
+
+- summarizes conversation with user if conversation is above certain length
 
 """
