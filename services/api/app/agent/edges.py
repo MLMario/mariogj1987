@@ -7,10 +7,19 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from .tools import get_chat_model
 from .helpers import last_user_text , get_exercise_data
 from menotrainer.config import Configuration
+from pydantic import BaseModel, Field
+from typing import Literal
 
 from menotrainer.services.api.app.domain.prompts import (
     SHOULD_RETRIEVE_EXERCISE_CARD
 )
+
+
+class RetrieveDecision(BaseModel):
+
+    decision: Literal['true','false'] = Field(
+        description="Return 'true' if the user is asking about a specific exercise and we should retrieve content, 'false' otherwise."
+    )
 
 
 async def should_retrieve_exercise_content(state: PhilosoferState) -> bool:
@@ -24,7 +33,10 @@ async def should_retrieve_exercise_content(state: PhilosoferState) -> bool:
     if last_message is None:
         return False
 
-    chat_model = get_chat_model(temperature= 0.0, model = Configuration.FAST_MODEL_NAME)
+    chat_model = get_chat_model(
+        temperature= 0.0, 
+        model = Configuration.MODEL_NAME
+        ).with_structured_output(RetrieveDecision)
 
     prompt = ChatPromptTemplate.from_messages([
         ("system", SHOULD_RETRIEVE_EXERCISE_CARD.prompt),
@@ -34,9 +46,9 @@ async def should_retrieve_exercise_content(state: PhilosoferState) -> bool:
 
     response = await (prompt | chat_model).ainvoke({"exercise_data": exercise_data})
     
-    content = response.content.lower().strip()
+    print("Should retrieve exercise content AI response:", response)
 
-    return "true" in content and "false" not in content
+    return response.decision == "true"
 
 
 
@@ -45,6 +57,8 @@ def should_summarize_conversation(
         summarization_threshold: int = 10) -> bool:
 
     messages = state.get("messages", [])
+
+    print("Numbber of messages in state", len(messages))
 
     if len(messages) >= Configuration.TOTAL_MESSAGES_SUMMARY_TRIGGER:
         return True

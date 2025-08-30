@@ -38,3 +38,5 @@ def create_work_graph() -> StateGraph:
         }
     )
     graph_builder.add_edge("summarize_conversation_node", END)
+
+    return graph_builder

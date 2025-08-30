@@ -72,7 +72,6 @@ async def retrieve_exercise_content(state: PhilosoferState):
         exercise_data['exercises_user_ask_about'].append(ex)
         exercise_data['main_muscle_target'].append(muscle)
 
-
     return {"exercises_data": exercise_data}
 
 

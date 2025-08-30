@@ -46,7 +46,7 @@ class Configuration(BaseSettings):
   )
 
   MODEL_TEMPERATURE: float = Field(
-    default=0.7,
+    default=0.6,
     description="Default temperature to use for the model's responses (conversational)",
   )
 

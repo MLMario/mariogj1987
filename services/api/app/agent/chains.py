@@ -20,7 +20,6 @@ def get_trainer_chain():
 
 def get_summary_chain(summary = ""):
 
-
     chat_model = get_chat_model()
 
     summary_prompt = SUMMARY_EXTEND_PROMPT_CARD if summary else SUMMARY_PROMPT_CARD
