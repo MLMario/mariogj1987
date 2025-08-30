@@ -1,0 +1,49 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks: [appnet]
+
+  api:
+    build:
+      context: C:/Users/mario/rag_project/menotrainer/services/api
+      dockerfile: Dockerfile
+      args:
+        EXTRA_GROUP: "api"   # tells the Dockerfile to install api-specific extras
+    container_name: api
+    depends_on: [redis]
+    ports:
+      - "8000:8000"
+    # Load envs from a file instead of listing them all here
+    env_file: [.env]
+    environment:
+      # You can override just a couple of things inline if you want
+      MENO_ENV: "dev"
+      MENO_USE_ATLAS_VECTOR: "true"
+    volumes:
+      - ./services/api:/app   # hot-reload for dev
+    command: >
+      sh -c "uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    networks: [appnet]
+
+  worker:
+    build:
+      context: C:/Users/mario/rag_project/menotrainer/services/api
+      dockerfile: Dockerfile
+      args:
+        EXTRA_GROUP: "worker"  # tells the Dockerfile to install worker-specific extras
+    container_name: worker
+    depends_on: [redis]
+    env_file: [.env]
+    volumes:
+      - ./services/api:/app
+    command: > #
+      sh -c "uv run celery -A app.worker_app.celery_app worker --loglevel=INFO"
+
+    networks: [appnet]
+
+networks:
+  appnet:
+    driver: bridge
