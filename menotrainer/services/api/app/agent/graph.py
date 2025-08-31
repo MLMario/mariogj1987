@@ -18,6 +18,8 @@ def create_work_graph() -> StateGraph:
 
     graph_builder.add_node("extract_knowledge_node", extract_knowledge_node)
 
+    graph_builder.add_node("tiny_knowledge_flag_node", tiny_knowledge_flag_node)
+
     graph_builder.add_node("summarize_knowledge_node", summarize_knowledge_node)
 
     graph_builder.add_node("connector_node", connector_node)
@@ -37,17 +39,28 @@ def create_work_graph() -> StateGraph:
         "conversation_node", 
         tools_condition,
          {
-            "tools": "extract_knowledge_node",
+            'tools': "extract_knowledge_node",
             END: "connector_node"
         }
     )
-    graph_builder.add_edge("extract_knowledge_node", "summarize_knowledge_node")
+
+    graph_builder.add_edge("extract_knowledge_node", "tiny_knowledge_flag_node")
+
+    graph_builder.add_conditional_edges(
+        "tiny_knowledge_flag_node", 
+        return_zero_results, 
+        {
+            True: "conversation_node",
+            False: "summarize_knowledge_node"
+            }
+        )
+
 
     graph_builder.add_edge("summarize_knowledge_node", "conversation_node")
 
     graph_builder.add_conditional_edges(
         "connector_node",
-        tools_condition,
+        should_save_into_episodic_memory,
         {
             True: "save_to_episodic_memory_node",
             False: "reset_knowledge_node"
@@ -67,7 +80,7 @@ def create_work_graph() -> StateGraph:
 
     graph_builder.add_edge("summarize_conversation_node", END)
 
-    return graph_builder
+    return graph_builder.compile()
 
 
 """
@@ -82,7 +95,7 @@ What Every Node and conditional Edges does:
 - Main conversation node to invoke response. will include persona, user data and extracted knowledge
 
 ** extract_knowledge_node **
-- extract_knowledge_node is a ToolNode
+- extract_knowledge_node is a ToolNode and dependant on conversation node response
 - Flow is to import create_retriever_tool which is a wrapper for the retriever function 
 (that retrives the data from MDMongo). Somthing like this:
 
@@ -96,22 +109,22 @@ knowledge_tool = create_retriever_tool(
     also when user ask you about recommendations to treat thier symtoms",
 )
 
-episodic_knoledge_tool = create_retriever_tool(
-    writer, 
-    "save_to_episodic_memory_node",
-    "Always use this tool when a question.....
 
-)
-
-tools = [knowledge_tool,episodic_knoledge_tool]
+tools = [knowledge_tool]
 
 extract_knowledge_node = ToolsNode[tools]
 
-- how do we tell the graph whic tool to use?
+** tiny_knowledge_flag_node **
+
+- updates state with a flag to indicate a knowledge search was perform (we cannot rely on document size / length due to possibility of 0 extracted)
+
+- tiny_knowledge_flag_node is a ToolNode that sets a flag in the state indicating that knowledge has already been extracted.
+- This helps avoid re-extracting knowledge and creating an infinite loop accidentally.
 
 ** summarize_knowledge_node **
 
--- summarizes extracted knowledge for context window size management
+-- summarizes extracted knowledge for context window size management 
+-- can deal with null returns, in which cases it doesn't update knowledge state
 -- also creates metadata about the situation the knowledge is being pulled in this format:
   {
   "Situation" : "user ask about menopause symptoms" ,
@@ -121,14 +134,15 @@ extract_knowledge_node = ToolsNode[tools]
 
 ** connector_node ** 
 
-helps push the conversation forward after knowledge has been extracted
+-- helps push the conversation forward after knowledge has been extracted
+-- To keep LLM calls in the nodes as much as possible, we will run the LLM decision of saving into episodic memory here, will out put true or false and 
 
 ** reset_knowledge_node **
 
 ** save_to_episodic_memory_node ** 
 
-- leverages summarize context output to save relevant information to episodic memory
-- updates episodic memory with new user data and extracted knowledge
+    - leverages summarize context output to save relevant information to episodic memory
+    - updates episodic memory with new user data and extracted knowledge
 
 ** reset_knowledge_node **
 
@@ -137,5 +151,18 @@ helps push the conversation forward after knowledge has been extracted
 ** summarize_conversation_node **
 
 - summarizes conversation with user if conversation is above certain length
+
+"""
+
+
+
+"""
+Some functions to define: 
+
+return_zero_results -> checks state for knowledge size and flag, if flag = true and knowledge size = 0, return True, else False
+
+should_save_into_episodic_memory -> reads boolean output from connector_node
+
+should_summarize_conversation -> needs update to token length as condition insitead of number of messages
 
 """
