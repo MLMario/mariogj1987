@@ -9,18 +9,18 @@ export type Limb = { el: [number, number]; hd: [number, number]; hand: Hand };
 
 // Standing arm presets (shoulders at (-4, 23) and (20, 23)).
 export const ARMS = {
-  restR: { el: [-8, 34], hd: [-8, 44], hand: "rest" },
-  restL: { el: [24, 34], hd: [24, 44], hand: "rest" },
+  restR: { el: [-5, 34], hd: [-5, 44], hand: "rest" },
+  restL: { el: [21, 34], hd: [21, 44], hand: "rest" },
   waveL: { el: [30, 14], hd: [30, -4], hand: "open" },
   pointL: { el: [32, 22], hd: [42, 12], hand: "point" },
-  holdL: { el: [27, 36], hd: [31, 27], hand: "hold" },
-  thumbsL: { el: [28, 36], hd: [26, 26], hand: "thumbs" },
-  openL: { el: [29, 33], hd: [37, 27], hand: "palm" },
-  poleR: { el: [-10, 33], hd: [-13, 40], hand: "hold" },
-  micR: { el: [-10, 33], hd: [1, 20], hand: "hold" },
+  holdL: { el: [24, 36], hd: [28, 27], hand: "hold" },
+  thumbsL: { el: [25, 36], hd: [23, 26], hand: "thumbs" },
+  openL: { el: [26, 33], hd: [34, 27], hand: "palm" },
+  poleR: { el: [-7, 33], hd: [-10, 40], hand: "hold" },
+  micR: { el: [-7, 33], hd: [2, 20], hand: "hold" },
   // seated at the desk, hands on the keyboard
-  deskR: { el: [-9, 36], hd: [-1, 48], hand: "rest" },
-  deskL: { el: [25, 36], hd: [17, 48], hand: "rest" },
+  deskR: { el: [-6, 36], hd: [2, 48], hand: "rest" },
+  deskL: { el: [22, 36], hd: [14, 48], hand: "rest" },
 } satisfies Record<string, Limb>;
 
 export type Outfit = {
@@ -166,8 +166,8 @@ export const drawChar = (p: Pix, x: number, y: number, o: CharOpts) => {
   const torsoLen = o.seated ? 32 : 27;
   const layer = o.layer ?? "all";
   if (layer === "arms") {
-    arm(p, x - 4, y + 23, o.r, x, y, f, -1);
-    arm(p, x + 20, y + 23, o.l, x, y, f, 1);
+    arm(p, x - 1, y + 23, o.r, x, y, f, -1);
+    arm(p, x + 17, y + 23, o.l, x, y, f, 1);
     return {
       r: [x + o.r.hd[0], y + o.r.hd[1]] as const,
       l: [x + o.l.hd[0], y + o.l.hd[1]] as const,
@@ -175,56 +175,57 @@ export const drawChar = (p: Pix, x: number, y: number, o: CharOpts) => {
   }
 
   if (f.backpack) {
-    p.rect(x - 8, top + 1, 32, 22, C.ink);
-    p.rect(x - 7, top + 2, 30, 20, f.backpack);
+    p.rect(x - 5, top + 1, 26, 22, C.ink);
+    p.rect(x - 4, top + 2, 24, 20, f.backpack);
   }
 
   if (!o.seated) {
     const hip = top + 3 + torsoLen;
     const [pc, ps] = f.pants;
-    p.rect(x - 5, hip, 26, 5, pc);
-    p.rect(x - 5, hip + 5, 11, 15, pc);
-    p.rect(x + 10, hip + 5, 11, 15, pc);
-    p.rect(x - 5, hip + 5, 2, 15, ps);
-    p.rect(x + 19, hip + 5, 2, 15, ps);
-    p.rect(x - 5, hip, 26, 1, ps);
+    p.rect(x - 3, hip, 22, 5, pc);
+    p.rect(x - 3, hip + 5, 11, 15, pc);
+    p.rect(x + 9, hip + 5, 10, 15, pc);
+    p.rect(x - 3, hip + 5, 2, 15, ps);
+    p.rect(x + 17, hip + 5, 2, 15, ps);
+    p.rect(x + 8, hip + 5, 1, 15, ps);
+    p.rect(x - 3, hip, 22, 1, ps);
     if (f.shorts) {
-      p.rect(x - 4, hip + 12, 9, 8, C.skin);
-      p.rect(x + 11, hip + 12, 9, 8, C.skin);
-      p.rect(x - 4, hip + 12, 1, 8, C.skinS);
-      p.rect(x + 19, hip + 12, 1, 8, C.skinS);
+      p.rect(x - 2, hip + 12, 9, 8, C.skin);
+      p.rect(x + 9, hip + 12, 9, 8, C.skin);
+      p.rect(x - 2, hip + 12, 1, 8, C.skinS);
+      p.rect(x + 17, hip + 12, 1, 8, C.skinS);
     }
     const fy = hip + 20;
-    p.rect(x - 6, fy, 12, 3, f.shoes);
-    p.rect(x + 10, fy, 12, 3, f.shoes);
-    p.rect(x - 6, fy + 2, 12, 1, C.ink);
-    p.rect(x + 10, fy + 2, 12, 1, C.ink);
+    p.rect(x - 4, fy, 12, 3, f.shoes);
+    p.rect(x + 9, fy, 12, 3, f.shoes);
+    p.rect(x - 4, fy + 2, 12, 1, C.ink);
+    p.rect(x + 9, fy + 2, 12, 1, C.ink);
   }
 
   // torso
   p.rect(x + 1, top, 14, 1, sh);
-  p.rect(x - 2, top + 1, 20, 1, sh);
-  p.rect(x - 5, top + 2, 26, 1, sh);
-  p.rect(x - 6, top + 3, 28, torsoLen, sh);
-  p.rect(x - 6, top + 3, 2, torsoLen, shS);
-  p.rect(x + 20, top + 3, 2, torsoLen, shS);
+  p.rect(x - 1, top + 1, 18, 1, sh);
+  p.rect(x - 3, top + 2, 22, 1, sh);
+  p.rect(x - 3, top + 3, 22, torsoLen, sh);
+  p.rect(x - 3, top + 3, 2, torsoLen, shS);
+  p.rect(x + 17, top + 3, 2, torsoLen, shS);
   p.px(x + 3, top + 10, shL);
   p.px(x + 12, top + 14, shL);
   if (f.shirtDots)
     for (let j = 0; j < torsoLen; j += 5)
-      for (let i = 0; i < 24; i += 6) p.px(x - 3 + i + (j % 10 ? 3 : 0), top + 5 + j, f.shirtDots);
+      for (let i = 0; i < 18; i += 6) p.px(x - 1 + i + (j % 10 ? 3 : 0), top + 5 + j, f.shirtDots);
   if (f.patch) {
     p.rect(x + 12, top + 7, 5, 4, f.patch);
-    p.rect(x - 1, top + 12, 5, 2, C.blue);
+    p.rect(x + 1, top + 12, 4, 2, C.blue);
   }
   if (f.coat) {
     const [cc, cs] = f.coat;
-    p.rect(x - 6, top + 2, 10, torsoLen + 1, cc);
-    p.rect(x + 12, top + 2, 10, torsoLen + 1, cc);
+    p.rect(x - 3, top + 2, 7, torsoLen + 1, cc);
+    p.rect(x + 12, top + 2, 7, torsoLen + 1, cc);
     p.rect(x + 3, top + 2, 1, torsoLen + 1, cs);
     p.rect(x + 12, top + 2, 1, torsoLen + 1, cs);
-    p.rect(x - 6, top + 2, 2, torsoLen + 1, cs);
-    p.rect(x + 20, top + 2, 2, torsoLen + 1, cs);
+    p.rect(x - 3, top + 2, 2, torsoLen + 1, cs);
+    p.rect(x + 17, top + 2, 2, torsoLen + 1, cs);
     // lapels
     p.rect(x + 4, top, 2, 4, cc);
     p.rect(x + 10, top, 2, 4, cc);
@@ -278,12 +279,12 @@ export const drawChar = (p: Pix, x: number, y: number, o: CharOpts) => {
       }
     p.rect(cx - 8, cy - 8, 2, 2, C.white);
     p.px(cx - 9, cy - 5, C.white);
-    p.rect(x - 4, top, 24, 2, C.cream3);
+    p.rect(x - 2, top, 20, 2, C.cream3);
   }
 
   if (layer === "all") {
-    arm(p, x - 4, y + 23, o.r, x, y, f, -1);
-    arm(p, x + 20, y + 23, o.l, x, y, f, 1);
+    arm(p, x - 1, y + 23, o.r, x, y, f, -1);
+    arm(p, x + 17, y + 23, o.l, x, y, f, 1);
   }
   return {
     r: [x + o.r.hd[0], y + o.r.hd[1]] as const,

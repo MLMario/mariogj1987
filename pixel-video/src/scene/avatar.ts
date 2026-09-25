@@ -39,24 +39,24 @@ export type Arm = { el: [number, number]; hd: [number, number] };
 // "r" is the arm on screen-left, "l" on screen-right.
 const POSES: Record<Pose, { r: Arm; l: Arm }> = {
   rest: {
-    r: { el: [-9, 36], hd: [-1, 48] },
-    l: { el: [25, 36], hd: [17, 48] },
+    r: { el: [-6, 36], hd: [2, 48] },
+    l: { el: [22, 36], hd: [14, 48] },
   },
   raise: {
-    r: { el: [-9, 36], hd: [-1, 48] },
+    r: { el: [-6, 36], hd: [2, 48] },
     l: { el: [32, 12], hd: [32, -6] },
   },
   point: {
-    r: { el: [-9, 36], hd: [-1, 48] },
+    r: { el: [-6, 36], hd: [2, 48] },
     l: { el: [34, 20], hd: [46, 6] },
   },
   thumbs: {
-    r: { el: [-9, 36], hd: [-1, 48] },
-    l: { el: [30, 38], hd: [26, 26] },
+    r: { el: [-6, 36], hd: [2, 48] },
+    l: { el: [27, 38], hd: [23, 26] },
   },
   shrug: {
-    r: { el: [-14, 36], hd: [-22, 26] },
-    l: { el: [30, 36], hd: [38, 26] },
+    r: { el: [-11, 36], hd: [-19, 26] },
+    l: { el: [27, 36], hd: [35, 26] },
   },
 };
 
@@ -90,12 +90,12 @@ const drawChair = (p: Pix, x: number, y: number) => {
 const drawTorso = (p: Pix, x: number, y: number) => {
   const top = y + 18;
   p.rect(x + 1, top, 14, 1, C.tee);
-  p.rect(x - 2, top + 1, 20, 1, C.tee);
-  p.rect(x - 5, top + 2, 26, 1, C.tee);
-  p.rect(x - 6, top + 3, 28, 70, C.tee);
+  p.rect(x - 1, top + 1, 18, 1, C.tee);
+  p.rect(x - 3, top + 2, 22, 1, C.tee);
+  p.rect(x - 3, top + 3, 22, 70, C.tee);
   // shading
-  p.rect(x - 6, top + 3, 2, 70, C.teeS);
-  p.rect(x + 20, top + 3, 2, 70, C.teeS);
+  p.rect(x - 3, top + 3, 2, 70, C.teeS);
+  p.rect(x + 17, top + 3, 2, 70, C.teeS);
   p.rect(x + 8, top + 26, 1, 30, C.teeS);
   p.px(x + 3, top + 10, C.teeL);
   p.px(x + 4, top + 11, C.teeL);
@@ -224,8 +224,8 @@ export const drawArms = (p: Pix, x: number, y0: number, s: AvatarState) => {
   const hand = s.mix < 0.5 ? s.from : s.to;
   const r = lerpArm(a.r, b.r, s.mix);
   const l = lerpArm(a.l, b.l, s.mix);
-  drawArm(p, x - 4, y + 23, r, x, y, hand === "shrug" ? "shrug" : "rest", "r");
-  drawArm(p, x + 20, y + 23, l, x, y, hand, "l");
+  drawArm(p, x - 1, y + 23, r, x, y, hand === "shrug" ? "shrug" : "rest", "r");
+  drawArm(p, x + 17, y + 23, l, x, y, hand, "l");
 };
 
 // Blink roughly every 3-4 s, deterministic.
