@@ -79,8 +79,8 @@ const crate = (p: Pix, cx: number, y: number, lidDy: number, lidHide: number) =>
   });
 };
 
-const BOOK_W = 62;
-const BOOK_H = 46;
+const BOOK_W = 68;
+const BOOK_H = 34;
 
 const bookClosed = (
   p: Pix,
@@ -96,16 +96,16 @@ const bookClosed = (
   p.rect(x, y, 5, BOOK_H, spine);
   p.rect(x + BOOK_W - 2, y + 2, 2, BOOK_H - 3, C.cream2);
   p.rect(x + 5, y + BOOK_H - 2, BOOK_W - 5, 2, C.cream2);
-  p.rect(x + 9, y + 5, BOOK_W - 15, 1, C.orange);
-  p.rect(x + 9, y + BOOK_H - 7, BOOK_W - 15, 1, C.orange);
+  p.rect(x + 9, y + 4, BOOK_W - 15, 1, C.orange);
+  p.rect(x + 9, y + BOOK_H - 6, BOOK_W - 15, 1, C.orange);
   lines.forEach((l, k) =>
-    textC(p, l, cx + 2, y + 12 + k * 10 + (lines.length === 1 ? 5 : 0), C.cream),
+    textC(p, l, cx + 2, y + 8 + k * 9 + (lines.length === 1 ? 4 : 0), C.cream),
   );
 };
 
 const page = (p: Pix, x: number, y: number, w: number, h: number, seed: number) => {
   p.rect(x, y, w, h, C.cream);
-  for (let r = 0; r < 7; r++) {
+  for (let r = 0; r < Math.floor((h - 6) / 5); r++) {
     const len = Math.floor((w - 8) * (0.55 + hash(seed + r) * 0.45));
     if (len > 0) p.rect(x + 4, y + 5 + r * 5, len, 1, C.cream3);
   }
@@ -113,7 +113,7 @@ const page = (p: Pix, x: number, y: number, w: number, h: number, seed: number) 
 
 const bookOpen = (p: Pix, cx: number, y: number, t: number) => {
   const pw = 34;
-  const ph = 42;
+  const ph = 36;
   const x = Math.round(cx - pw);
   p.rect(x - 2, y - 1, pw * 2 + 4, ph + 4, C.blue2);
   p.rect(x - 2, y + ph + 1, pw * 2 + 4, 2, C.ink);
@@ -278,56 +278,58 @@ const stopwatch = (p: Pix, cx: number, cy: number, t: number) => {
 
 // ---------- the beats ----------
 
-export const drawBeats = (p: Pix, t: number) =>
-  p.with({ dy: 18 }, () => drawStage(p, t));
+// Stage: the area above the avatar, 90 x 92 foreground units.
+export const drawBeats = (p: Pix, t: number) => drawStage(p, t);
 
 const drawStage = (p: Pix, t: number) => {
   // B1 + B2a: crate drops, then opens to reveal the model name.
   if (t >= T.s1 && t < 13.2) {
     const hide = dissolve(t, T.s1, 13.1, 0.3);
     const fall = backOut(prog(t, 0.5, 0.7));
-    let cy = lerp(-50, 104, fall);
-    const shake = t > 2 && t < 8.8 && Math.floor(t * 10) % 20 < 2 ? (Math.floor(t * 30) % 2 ? 1 : -1) : 0;
+    const cy = lerp(-40, 46, fall);
+    const shake =
+      t > 2 && t < 8.8 && Math.floor(t * 10) % 20 < 2
+        ? Math.floor(t * 30) % 2
+          ? 1
+          : -1
+        : 0;
     const lidP = easeOut(prog(t, 8.9, 0.7));
     p.with({ hide: t < 1 ? 0 : hide, dx: shake }, () => {
-      // light rays from the open crate
       if (t > 9.0) {
         const ray = prog(t, 9.0, 0.5);
         for (let k = 0; k < 5; k++) {
-          const rx = 72 + k * 9;
+          const rx = 26 + k * 9;
           p.with({ hide: Math.max(1 - ray, 0.5 + (k % 2) * 0.15) }, () =>
-            p.rect(rx, 30, 4, 74, C.orangeL),
+            p.rect(rx, 2, 4, 44, C.orangeL),
           );
         }
       }
-      crate(p, 90, Math.round(cy), -lidP * 60, lidP);
+      crate(p, 45, Math.round(cy), -lidP * 50, lidP);
     });
-    // dust puffs on landing
     const dust = prog(t, 1.15, 0.6);
     if (dust > 0 && dust < 1)
       p.with({ hide: dust }, () => {
-        for (let k = 0; k < 4; k++) {
-          const d = Math.round(dust * 14) + k * 2;
-          p.rect(66 - d, 134 - k, 3, 2, C.cream3);
-          p.rect(112 + d, 134 - k, 3, 2, C.cream3);
+        for (let k = 0; k < 3; k++) {
+          const d = Math.round(dust * 10) + k * 2;
+          p.rect(20 - d, 78 - k, 2, 1, C.cream3);
+          p.rect(68 + d, 78 - k, 2, 1, C.cream3);
         }
       });
-    // anticipation sparkles
     if (t > 2 && t < 8.9)
       [
-        [58, 92],
-        [124, 98],
-        [70, 76],
-        [114, 80],
+        [14, 40],
+        [76, 46],
+        [20, 24],
+        [70, 28],
       ].forEach(([x, y], k) => sparkle(p, x, y, t * 1.3 + k * 0.27, C.orangeL));
 
     // highlight 1: model name rising out of the crate
-    const up = easeOut(prog(t, 9.2, 0.8));
     if (t > 9.2) {
-      const ty = Math.round(lerp(96, 44, up));
+      const up = easeOut(prog(t, 9.2, 0.8));
+      const ty = Math.round(lerp(40, 12, up));
       p.with({ hide: Math.max(1 - prog(t, 9.2, 0.3), hide) }, () => {
-        plate(p, 90, ty - 6, 110, 26);
-        textC(p, "OPUS 5.5", 91, ty, C.orange, 2, C.ink);
+        plate(p, 45, ty - 5, 62, 17);
+        textC(p, "OPUS 5.5", 46, ty, C.orange, 1, C.ink);
       });
     }
   }
@@ -336,24 +338,24 @@ const drawStage = (p: Pix, t: number) => {
   if (t >= 13.2 && t < T.s4 + 0.4) {
     const hide = dissolve(t, 13.2, T.s4 + 0.4, 0.35);
     const inP = backOut(prog(t, 13.2, 0.7));
-    const toSide = easeInOut(prog(t, T.s3, 0.6));
-    const cx = lerp(lerp(200, 90, inP), 52, toSide);
-    const y = Math.round(lerp(lerp(-40, 70, inP), 82, toSide));
+    const up = easeInOut(prog(t, T.s3, 0.6));
+    const cx = lerp(130, 45, inP);
+    const y = Math.round(lerp(lerp(-40, 28, inP), 6, up));
     p.with({ hide }, () => {
       const open = t > 14.3 && t < T.s3 + 0.1;
-      if (open) bookOpen(p, cx, y - 2, t - 14.3);
+      if (open) bookOpen(p, cx, y + 2, t - 14.3);
       else bookClosed(p, cx, y, C.blue2, C.ink, ["PROMPTING", "GUIDE"]);
       if (t > T.s3 + 0.3) {
         const fin = backOut(prog(t, T.s3 + 0.3, 0.7));
-        const fx = lerp(230, 128, fin);
-        bookClosed(p, fx, 82, C.teal2, C.bg1, ["FABLE", "GUIDE"]);
+        const fx = lerp(140, 45, fin);
+        bookClosed(p, fx, 50, C.teal2, C.bg1, ["FABLE", "GUIDE"]);
         if (t > 22.2)
           [
-            [98, 76],
-            [160, 88],
-            [150, 132],
-            [104, 134],
-            [128, 72],
+            [8, 52],
+            [84, 58],
+            [80, 86],
+            [10, 82],
+            [66, 46],
           ].forEach(([x, yy], k) => sparkle(p, x, yy, t * 1.6 + k * 0.21, C.orangeL));
       }
     });
@@ -364,28 +366,29 @@ const drawStage = (p: Pix, t: number) => {
     const tbHide = dissolve(t, T.s4 + 0.4, 28.0, 0.35);
     if (tbHide < 1) {
       const pop = backOut(prog(t, T.s4 + 0.4, 0.5));
-      p.with({ hide: tbHide }, () => toolbox(p, 90, Math.round(lerp(150, 92, pop))));
+      p.with({ hide: tbHide }, () => toolbox(p, 45, Math.round(lerp(100, 46, pop))));
     }
     const out = dissolve(t, 28.0, T.s5 + 0.2, 0.3);
     [28.1, 28.7, 29.3].forEach((st, k) => {
       if (t < st) return;
       const pop = backOut(prog(t, st, 0.45));
-      const y = Math.round(lerp(40, 58, pop));
+      const y = Math.round(lerp(4, 16, pop));
       p.with({ hide: Math.max(out, 1 - prog(t, st, 0.2)) }, () =>
-        robot(p, k, 40 + k * 50, y, t),
+        robot(p, k, 15 + k * 30, y, t),
       );
     });
     // highlight 2
     if (t > 30.0) {
       const n = Math.floor(prog(t, 30.0, 0.9) * 20);
       p.with({ hide: out }, () => {
-        plate(p, 90, 104, 150, 48);
+        plate(p, 45, 52, 76, 28);
         const l1 = "EACH MODEL";
-        text(p, l1.slice(0, n), 90 - textWidth(l1, 2) / 2, 112, C.cream, 2, C.ink);
+        const x1 = 46 - textWidth(l1) / 2;
+        text(p, l1.slice(0, n), x1, 56, C.cream, 1, C.ink);
         const k = Math.max(0, n - 10);
-        const x2 = 90 - textWidth("HAS QUIRKS", 2) / 2;
-        text(p, "HAS ".slice(0, k), x2, 131, C.cream, 2, C.ink);
-        text(p, "QUIRKS".slice(0, Math.max(0, k - 4)), x2 + 48, 131, C.orange, 2, C.ink);
+        const x2 = 46 - textWidth("HAS QUIRKS") / 2;
+        text(p, "HAS ".slice(0, k), x2, 67, C.cream, 1, C.ink);
+        text(p, "QUIRKS".slice(0, Math.max(0, k - 4)), x2 + 24, 67, C.orange, 1, C.ink);
       });
     }
   }
@@ -394,21 +397,20 @@ const drawStage = (p: Pix, t: number) => {
   if (t >= T.s5 && t < T.s6) {
     const hide = dissolve(t, T.s5, T.s6, 0.35);
     p.with({ hide }, () => {
-      bookClosedMini(p, 22, 58, C.blue2);
-      bookClosedMini(p, 22, 84, C.teal2);
-      clipboard(p, 104, 52, Math.floor(clamp((t - 35.3) / 0.8 + 1, 0, 4)));
+      bookClosedMini(p, 2, 22, C.blue2);
+      bookClosedMini(p, 2, 48, C.teal2);
+      clipboard(p, 52, 16, Math.floor(clamp((t - 35.3) / 0.8 + 1, 0, 4)));
       const a = t * 2.2;
-      gear(p, 146, 110, 6, a, C.orange, C.bg1);
-      gear(p, 156, 124, 4, -a * 1.5 + 0.3, C.teal, C.bg1);
+      gear(p, 81, 70, 6, a, C.orange, C.bg1);
+      gear(p, 83, 85, 4, -a * 1.5 + 0.3, C.teal, C.bg1);
       for (let k = 0; k < 4; k++) {
         const st = 33.7 + k * 0.45;
         const f = prog(t, st, 0.6);
         if (f <= 0 || f >= 1) continue;
         const e = easeInOut(f);
-        const sx = 32;
-        const sy = k % 2 ? 90 : 64;
-        const px = lerp(sx, 100, e);
-        const py = lerp(sy, 80, e) - Math.sin(e * Math.PI) * 26;
+        const sy = k % 2 ? 52 : 26;
+        const px = lerp(12, 46, e);
+        const py = lerp(sy, 44, e) - Math.sin(e * Math.PI) * 20;
         p.rect(px, py, 7, 9, C.cream);
         p.rect(px + 1, py + 2, 4, 1, C.cream3);
         p.rect(px + 1, py + 5, 4, 1, C.cream3);
@@ -422,40 +424,38 @@ const drawStage = (p: Pix, t: number) => {
     if (swHide < 1) {
       const pop = backOut(prog(t, T.s6, 0.5));
       p.with({ hide: swHide, dy: Math.round((1 - pop) * 30) }, () => {
-        stopwatch(p, 90, 70, t);
+        stopwatch(p, 45, 36, t);
         if (t > 41.0) {
           const n = Math.floor(prog(t, 41.0, 0.5) * 9);
-          plate(p, 90, 106, 118, 24);
-          textC(p, "10-15 MIN", 91, 111, C.orange, 2, C.ink, n);
+          plate(p, 45, 70, 66, 17);
+          textC(p, "10-15 MIN", 46, 75, C.orange, 1, C.ink, n);
         }
       });
     }
     if (t > 46.0) {
       const hide = 1 - prog(t, 46.0, 0.3);
       p.with({ hide }, () => {
-        const base = 150;
-        p.rect(34, base, 116, 2, C.cream3);
-        // small "before" bar
-        const b1 = Math.round(easeOut(prog(t, 46.3, 0.4)) * 6);
-        p.rect(52, base - b1, 24, b1, C.cream3);
-        // big "after" bar
-        const b2 = Math.round(easeOut(prog(t, 46.9, 1.4)) * 100);
-        p.rect(104, base - b2, 26, b2, C.orange);
-        p.rect(104, base - b2, 3, b2, C.orangeL);
-        p.rect(127, base - b2, 3, b2, C.orange2);
+        const base = 88;
+        p.rect(8, base, 74, 1, C.cream3);
+        const b1 = Math.round(easeOut(prog(t, 46.3, 0.4)) * 4);
+        p.rect(16, base - b1, 18, b1, C.cream3);
+        const b2 = Math.round(easeOut(prog(t, 46.9, 1.4)) * 66);
+        p.rect(50, base - b2, 20, b2, C.orange);
+        p.rect(50, base - b2, 2, b2, C.orangeL);
+        p.rect(68, base - b2, 2, b2, C.orange2);
         if (t > 48.3) {
-          const bounce = Math.round(Math.abs(Math.sin((t - 48.3) * 4)) * 3);
-          const ay = base - 100 - 18 - bounce;
-          p.rect(115, ay + 4, 4, 9, C.teal);
-          p.rect(111, ay + 4, 12, 2, C.teal);
-          p.rect(113, ay + 2, 8, 2, C.teal);
-          p.rect(115, ay, 4, 2, C.teal);
+          const bounce = Math.round(Math.abs(Math.sin((t - 48.3) * 4)) * 2);
+          const ay = base - 66 - 14 - bounce;
+          p.rect(58, ay + 4, 4, 8, C.teal);
+          p.rect(54, ay + 4, 12, 2, C.teal);
+          p.rect(56, ay + 2, 8, 2, C.teal);
+          p.rect(58, ay, 4, 2, C.teal);
           [
-            [98, 60],
-            [138, 70],
-            [96, 100],
-            [140, 112],
-            [124, 40],
+            [42, 30],
+            [80, 36],
+            [40, 62],
+            [80, 66],
+            [72, 10],
           ].forEach(([x, y], k) => sparkle(p, x, y, t * 1.5 + k * 0.23, C.orangeL));
         }
       });

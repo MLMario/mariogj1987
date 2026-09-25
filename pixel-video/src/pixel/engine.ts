@@ -26,8 +26,12 @@ export class Pix {
   // Dither-dissolve: pixels with bayer < hide are skipped (0 = fully visible).
   hide = 0;
 
-  constructor(ctx: CanvasRenderingContext2D) {
+  // Size of one drawing unit in canvas pixels (2 = chunkier foreground).
+  s: number;
+
+  constructor(ctx: CanvasRenderingContext2D, s = 1) {
     this.ctx = ctx;
+    this.s = s;
   }
 
   with(opts: { dx?: number; dy?: number; hide?: number }, fn: () => void) {
@@ -47,14 +51,15 @@ export class Pix {
     w = Math.round(w);
     h = Math.round(h);
     if (w <= 0 || h <= 0) return;
+    const s = this.s;
     this.ctx.fillStyle = c;
     if (this.hide <= 0) {
-      this.ctx.fillRect(x, y, w, h);
+      this.ctx.fillRect(x * s, y * s, w * s, h * s);
       return;
     }
     for (let j = y; j < y + h; j++)
       for (let i = x; i < x + w; i++)
-        if (bayer(i, j) >= this.hide) this.ctx.fillRect(i, j, 1, 1);
+        if (bayer(i, j) >= this.hide) this.ctx.fillRect(i * s, j * s, s, s);
   }
 
   px(x: number, y: number, c: string) {

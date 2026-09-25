@@ -178,11 +178,13 @@ const drawFace = (p: Pix, x: number, y: number, s: AvatarState) => {
     p.rect(x + 4, y + 8, 2, 1, C.skinD);
     p.rect(x + 10, y + 8, 2, 1, C.skinD);
   } else {
-    const lr = s.look > 0.5 ? 1 : 0;
+    // Pupils sit on the inner-right side so he always looks toward the
+    // stage; "look" lifts them up toward the image.
+    const up = s.look > 0.5 ? 0 : 1;
     p.rect(x + 4, y + 7, 2, 2, C.white);
     p.rect(x + 10, y + 7, 2, 2, C.white);
-    p.rect(x + 4 + lr, y + 7 + (lr ? 0 : 0), 1, 2, C.ink);
-    p.rect(x + 10 + lr, y + 7, 1, 2, C.ink);
+    p.rect(x + 5, y + 7, 1, 1 + up, C.ink);
+    p.rect(x + 11, y + 7, 1, 1 + up, C.ink);
   }
   const m = s.mouth;
   if (m === 0) {

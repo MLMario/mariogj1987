@@ -7,7 +7,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import { H, Pix, SCALE, W } from "./pixel/engine";
-import { drawBack, drawDesk } from "./scene/room";
+import { DESK_Y, drawBack, drawDesk } from "./scene/room";
 import {
   drawArms,
   drawAvatar,
@@ -15,8 +15,9 @@ import {
 } from "./scene/avatar";
 import { avatarAt, drawBeats } from "./scene/beats";
 
-export const AV_X = 30;
-export const AV_Y = 238;
+// Avatar head top-left, in 2x foreground units.
+export const AV_X = 12;
+export const AV_Y = DESK_Y - 46;
 
 export const PixelVideo: React.FC<{ withAudio?: boolean }> = ({
   withAudio = true,
@@ -29,9 +30,10 @@ export const PixelVideo: React.FC<{ withAudio?: boolean }> = ({
     const ctx = ref.current?.getContext("2d");
     if (!ctx) return;
     const t = frame / fps;
-    const p = new Pix(ctx);
+    const bg = new Pix(ctx, 1);
+    const p = new Pix(ctx, 2);
     const av = avatarAt(frame, fps);
-    drawBack(p);
+    drawBack(bg, p);
     drawAvatarBack(p, AV_X, AV_Y);
     drawAvatar(p, AV_X, AV_Y, av);
     drawDesk(p, t);
