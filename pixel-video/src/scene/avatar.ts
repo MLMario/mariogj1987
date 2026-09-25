@@ -3,7 +3,7 @@ import { C } from "../pixel/palette";
 
 // Head: short buzzed hair with receding temples, stubble, visible ears.
 // Eyes, brows and mouth are drawn on top so they can animate.
-const HEAD: Grid = [
+export const HEAD: Grid = [
   "....HHHHHHHH....",
   "..HHhHHHHhHHHH..",
   ".HHHHHhHHHHhHHH.",
@@ -23,7 +23,7 @@ const HEAD: Grid = [
   ".....SSSSSS.....",
   ".....sSSSSs.....",
 ];
-const HEAD_PAL = {
+export const HEAD_PAL = {
   H: C.hair,
   h: C.hairL,
   S: C.skin,
@@ -34,7 +34,7 @@ const HEAD_PAL = {
 
 export type Pose = "rest" | "raise" | "point" | "thumbs" | "shrug";
 
-type Arm = { el: [number, number]; hd: [number, number] };
+export type Arm = { el: [number, number]; hd: [number, number] };
 // Joint targets relative to the body origin (head top-left).
 // "r" is the arm on screen-left, "l" on screen-right.
 const POSES: Record<Pose, { r: Arm; l: Arm }> = {
@@ -170,7 +170,7 @@ const drawArm = (
   }
 };
 
-const drawFace = (p: Pix, x: number, y: number, s: AvatarState) => {
+export const drawFace = (p: Pix, x: number, y: number, s: AvatarState) => {
   const by = y + (s.brows > 0.5 ? 5 : 6);
   p.rect(x + 3, by, 4, 1, C.hair);
   p.rect(x + 9, by, 4, 1, C.hair);
