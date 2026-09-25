@@ -7,7 +7,8 @@ import { AvatarState, drawFace, HEAD, HEAD_PAL } from "../scene/avatar";
 export type Hand = "rest" | "open" | "point" | "thumbs" | "hold" | "palm";
 export type Limb = { el: [number, number]; hd: [number, number]; hand: Hand };
 
-// Standing arm presets (shoulders at (-4, 23) and (20, 23)).
+// Arm presets (shoulders at (-1, 23) and (17, 23)). "R" is the arm on
+// screen-left, "L" on screen-right (toward the content).
 export const ARMS = {
   restR: { el: [-5, 34], hd: [-5, 44], hand: "rest" },
   restL: { el: [21, 34], hd: [21, 44], hand: "rest" },
@@ -18,6 +19,8 @@ export const ARMS = {
   openL: { el: [26, 33], hd: [34, 27], hand: "palm" },
   poleR: { el: [-7, 33], hd: [-10, 40], hand: "hold" },
   micR: { el: [-7, 33], hd: [2, 20], hand: "hold" },
+  shrugR: { el: [-11, 36], hd: [-19, 26], hand: "palm" },
+  shrugL: { el: [27, 36], hd: [35, 26], hand: "palm" },
   // seated at the desk, hands on the keyboard
   deskR: { el: [-6, 36], hd: [2, 48], hand: "rest" },
   deskL: { el: [22, 36], hd: [14, 48], hand: "rest" },

@@ -1,0 +1,389 @@
+{
+  "name": "host",
+  "version": 1,
+  "units": "1 unit = 1 art pixel; render at an integer scale (6x or 12x) with nearest-neighbour",
+  "cell": {
+    "w": 80,
+    "h": 84,
+    "headOrigin": {
+      "x": 26,
+      "y": 10
+    }
+  },
+  "head": {
+    "size": {
+      "w": 16,
+      "h": 18
+    },
+    "grid": [
+      "....HHHHHHHH....",
+      "..HHhHHHHhHHHH..",
+      ".HHHHHhHHHHhHHH.",
+      ".HHhSSSSSSSSHHH.",
+      ".HHSSSSSSSSSSHH.",
+      ".HSSSSSSSSSSSSH.",
+      ".SSSSSSSSSSSSSS.",
+      "sSSSSSSSSSSSSSSs",
+      "sSSSSSSSSSSSSSSs",
+      "sSSSSSSSSnSSSSSs",
+      "sSSSSSSSSnSSSSSs",
+      ".SSSSSSnnSSSSSS.",
+      ".BSSSSSSSSSSSSB.",
+      ".BSBSSSSSSSSBSB.",
+      "..BSBSSSSSSBSB..",
+      "...BBSBSBSBBB...",
+      ".....SSSSSS.....",
+      ".....sSSSSs....."
+    ],
+    "palette": {
+      "H": "#2b211d",
+      "h": "#43342c",
+      "S": "#e3a982",
+      "s": "#c4845f",
+      "n": "#c4845f",
+      "B": "#b98a6c"
+    }
+  },
+  "face": {
+    "eyes": "2x2 white sockets at (4,7) and (10,7); pupils on the right column so he looks toward the content",
+    "mouth": {
+      "0": "closed",
+      "1": "half open",
+      "2": "open",
+      "3": "smile"
+    },
+    "brows": {
+      "0": "normal (row 6)",
+      "1": "raised (row 5)"
+    },
+    "blink": "eyes replaced by a 2px line on row 8"
+  },
+  "body": {
+    "torso": {
+      "x": -3,
+      "w": 22,
+      "top": 18
+    },
+    "shoulders": {
+      "right": [
+        -1,
+        23
+      ],
+      "left": [
+        17,
+        23
+      ]
+    },
+    "standingHeight": 71
+  },
+  "armPresets": {
+    "restR": {
+      "el": [
+        -5,
+        34
+      ],
+      "hd": [
+        -5,
+        44
+      ],
+      "hand": "rest"
+    },
+    "restL": {
+      "el": [
+        21,
+        34
+      ],
+      "hd": [
+        21,
+        44
+      ],
+      "hand": "rest"
+    },
+    "waveL": {
+      "el": [
+        30,
+        14
+      ],
+      "hd": [
+        30,
+        -4
+      ],
+      "hand": "open"
+    },
+    "pointL": {
+      "el": [
+        32,
+        22
+      ],
+      "hd": [
+        42,
+        12
+      ],
+      "hand": "point"
+    },
+    "holdL": {
+      "el": [
+        24,
+        36
+      ],
+      "hd": [
+        28,
+        27
+      ],
+      "hand": "hold"
+    },
+    "thumbsL": {
+      "el": [
+        25,
+        36
+      ],
+      "hd": [
+        23,
+        26
+      ],
+      "hand": "thumbs"
+    },
+    "openL": {
+      "el": [
+        26,
+        33
+      ],
+      "hd": [
+        34,
+        27
+      ],
+      "hand": "palm"
+    },
+    "poleR": {
+      "el": [
+        -7,
+        33
+      ],
+      "hd": [
+        -10,
+        40
+      ],
+      "hand": "hold"
+    },
+    "micR": {
+      "el": [
+        -7,
+        33
+      ],
+      "hd": [
+        2,
+        20
+      ],
+      "hand": "hold"
+    },
+    "shrugR": {
+      "el": [
+        -11,
+        36
+      ],
+      "hd": [
+        -19,
+        26
+      ],
+      "hand": "palm"
+    },
+    "shrugL": {
+      "el": [
+        27,
+        36
+      ],
+      "hd": [
+        35,
+        26
+      ],
+      "hand": "palm"
+    },
+    "deskR": {
+      "el": [
+        -6,
+        36
+      ],
+      "hd": [
+        2,
+        48
+      ],
+      "hand": "rest"
+    },
+    "deskL": {
+      "el": [
+        22,
+        36
+      ],
+      "hd": [
+        14,
+        48
+      ],
+      "hand": "rest"
+    }
+  },
+  "outfits": {
+    "everyday": {
+      "shirt": [
+        "#4b4f5c",
+        "#373a45",
+        "#606576"
+      ],
+      "sleeves": "short",
+      "pants": [
+        "#3b4a73",
+        "#2c3858"
+      ],
+      "shoes": "#f6f2ea",
+      "headphones": true
+    },
+    "hiking": {
+      "shirt": [
+        "#2c7a76",
+        "#215c59",
+        "#4fb3a9"
+      ],
+      "sleeves": "short",
+      "pants": [
+        "#8a7757",
+        "#6b5b41"
+      ],
+      "shoes": "#5a3a26",
+      "hat": "cap",
+      "hatColor": "#c8702c",
+      "backpack": "#c8702c"
+    },
+    "beach": {
+      "shirt": [
+        "#f29e4c",
+        "#c8702c",
+        "#ffcf8f"
+      ],
+      "sleeves": "short",
+      "shirtDots": "#f3e7cf",
+      "pants": [
+        "#4fb3a9",
+        "#2c7a76"
+      ],
+      "shorts": true,
+      "shoes": "#d8719f",
+      "eyes": "sun"
+    },
+    "scientist": {
+      "shirt": [
+        "#4b4f5c",
+        "#373a45",
+        "#606576"
+      ],
+      "sleeves": "long",
+      "coat": [
+        "#f6f2ea",
+        "#bdb7ac"
+      ],
+      "pants": [
+        "#3b4a73",
+        "#2c3858"
+      ],
+      "shoes": "#070a15",
+      "eyes": "goggles"
+    },
+    "teacher": {
+      "shirt": [
+        "#f3e7cf",
+        "#d9c7a6",
+        "#f6f2ea"
+      ],
+      "sleeves": "long",
+      "coat": [
+        "#c8702c",
+        "#6e2a33"
+      ],
+      "pants": [
+        "#4a4f63",
+        "#383c4c"
+      ],
+      "shoes": "#5a3a26"
+    },
+    "speaker": {
+      "shirt": [
+        "#4b4f5c",
+        "#373a45",
+        "#606576"
+      ],
+      "sleeves": "long",
+      "coat": [
+        "#212c58",
+        "#10162f"
+      ],
+      "pants": [
+        "#172043",
+        "#0a0e1d"
+      ],
+      "shoes": "#070a15",
+      "headphones": false
+    },
+    "astronaut": {
+      "shirt": [
+        "#f3e7cf",
+        "#d9c7a6",
+        "#f6f2ea"
+      ],
+      "sleeves": "long",
+      "pants": [
+        "#f3e7cf",
+        "#d9c7a6"
+      ],
+      "shoes": "#a8977a",
+      "backpack": "#d9c7a6",
+      "helmet": true,
+      "patch": "#f29e4c"
+    }
+  },
+  "animations": {
+    "idle": 4,
+    "talk": 4,
+    "wave": 4,
+    "point": 2,
+    "thumbs": 2,
+    "shrug": 2
+  },
+  "palette": {
+    "bg0": "#0a0e1d",
+    "bg1": "#10162f",
+    "bg2": "#172043",
+    "bg3": "#212c58",
+    "dot": "#26335f",
+    "ink": "#070a15",
+    "cream": "#f3e7cf",
+    "cream2": "#d9c7a6",
+    "cream3": "#a8977a",
+    "orange": "#f29e4c",
+    "orange2": "#c8702c",
+    "orangeL": "#ffcf8f",
+    "teal": "#4fb3a9",
+    "teal2": "#2c7a76",
+    "pink": "#d8719f",
+    "blue": "#6b8fe0",
+    "blue2": "#44609f",
+    "white": "#f6f2ea",
+    "red": "#6e2a33",
+    "desk": "#232b4d",
+    "deskTop": "#34406e",
+    "deskEdge": "#4f5d96",
+    "deskDark": "#171d38",
+    "skin": "#e3a982",
+    "skinS": "#c4845f",
+    "skinD": "#94583f",
+    "stub": "#b98a6c",
+    "hair": "#2b211d",
+    "hairL": "#43342c",
+    "tee": "#4b4f5c",
+    "teeS": "#373a45",
+    "teeL": "#606576",
+    "hp": "#eeeae3",
+    "hpS": "#bdb7ac",
+    "hpD": "#6f6a62",
+    "chair": "#16181f",
+    "chairL": "#2a2d39",
+    "mouth": "#5a2020"
+  }
+}
